@@ -22,7 +22,7 @@ public class CreateAccountPage {
         this.createAccountPage = page;
     }
 
-    public void createAccount() {
+    public void fillAccountRegistrationForm() {
         createAccountPage.locator(FIRST_NAME).fill("FirstName");
         createAccountPage.locator(LAST_NAME).fill("LastName");
         createAccountPage.locator(EMAIL).fill("test@email.com");
