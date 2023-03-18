@@ -8,8 +8,7 @@ public class SecondTest extends PlaywrightRunner {
     @Test
     public void fillRegistrationFormTest() {
 
-        page.navigate("https://www.bestbuy.com/?intl=nosplash");
-
+        page.navigate(getProperty("url"));
         accountNavigationMenu.navigateTo(AccountEntries.CREATE_ACCOUNT);
         createAccountPage.fillAccountRegistrationForm();
 

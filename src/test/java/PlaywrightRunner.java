@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import pages.AccountNavigationMenu;
 import pages.CreateAccountPage;
+import services.EnvironmentReaderService;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -62,6 +63,11 @@ public class PlaywrightRunner {
                 }
             }
         }
+    }
+
+    // Property reader
+    protected String getProperty(String key) {
+        return EnvironmentReaderService.getProperty(key);
     }
 
 }
