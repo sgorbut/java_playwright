@@ -3,10 +3,12 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
-public class SimpleTest {
+import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
+
+public class FirstTest {
 
     @Test
-    public void firstTest() throws InterruptedException {
+    public void dealOfTheDayTimerTest() {
 
         Playwright playwright = Playwright.create();
         Browser browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
@@ -14,13 +16,11 @@ public class SimpleTest {
         Page page = browserContext.newPage();
 
         page.navigate("https://www.bestbuy.com/?intl=nosplash");
-//        page.locator("//a[@data-lid='hdr_dotd']").click();    //xpath
-//        page.locator("a:has-text('Deal of the Day')").click();  //text
 
-        Locator dealOfTheDay = page.locator("a:has-text('Deal of the Day')");
+        Locator dealOfTheDay = page.locator("a:has-text('Deal of the Day')"); // text locator
         dealOfTheDay.click();
 
-        Thread.sleep(5000);
+        assertThat(page.locator(".countdown-clock")).isVisible(); // css locator
 
     }
 
