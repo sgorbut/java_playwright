@@ -5,15 +5,10 @@ import java.util.Arrays;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
-public class FirstTest {
+public class FirstTest extends PlaywrightRunner {
 
     @Test
     public void dealOfTheDayTimerTest() {
-
-        Playwright playwright = Playwright.create();
-        Browser browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
-        BrowserContext browserContext = browser.newContext(new Browser.NewContextOptions().setPermissions(Arrays.asList("geolocation")));
-        Page page = browserContext.newPage();
 
         page.navigate("https://www.bestbuy.com/?intl=nosplash");
 
