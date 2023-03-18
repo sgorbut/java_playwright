@@ -1,3 +1,4 @@
+import annotations.PlaywrightPage;
 import com.microsoft.playwright.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -5,6 +6,8 @@ import org.junit.jupiter.api.BeforeEach;
 import pages.AccountNavigationMenu;
 import pages.CreateAccountPage;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 
 public class PlaywrightRunner {
@@ -13,8 +16,6 @@ public class PlaywrightRunner {
     protected Browser browser;
     protected BrowserContext browserContext;
     protected static Playwright playwright;
-    protected CreateAccountPage createAccountPage;
-    protected AccountNavigationMenu accountNavigationMenu;
 
     @BeforeAll
     public static void Init(){
@@ -30,8 +31,7 @@ public class PlaywrightRunner {
         browserContext = browser
                 .newContext(new Browser.NewContextOptions().setPermissions(Arrays.asList("geolocation")));
         page = browserContext.newPage();
-        createAccountPage = new CreateAccountPage(page);
-        accountNavigationMenu = new AccountNavigationMenu(page);
+        initPage(this, page);
 
     }
 
@@ -41,6 +41,27 @@ public class PlaywrightRunner {
         browserContext.close();
         browser.close();
 
+    }
+
+    @PlaywrightPage
+    protected CreateAccountPage createAccountPage;
+
+    @PlaywrightPage
+    protected AccountNavigationMenu accountNavigationMenu;
+
+    // Get pages used in tests
+    private void initPage(Object object, Page page) {
+        Class<?> pageClass = object.getClass().getSuperclass();
+        for(Field field : pageClass.getDeclaredFields()) {
+            if(field.isAnnotationPresent(PlaywrightPage.class)) {
+                Class<?>[] type = {Page.class};
+                try {
+                    field.set(this, field.getType().getConstructor(type).newInstance(page));
+                } catch (IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException e) {
+                    System.out.println("Did not manage to call constructor for playwright page with name " + field.getName());
+                }
+            }
+        }
     }
 
 }
