@@ -2,6 +2,7 @@ import com.microsoft.playwright.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import pages.CreateAccountPage;
 
 import java.util.Arrays;
 
@@ -11,6 +12,7 @@ public class PlaywrightRunner {
     protected Browser browser;
     protected BrowserContext browserContext;
     protected static Playwright playwright;
+    protected CreateAccountPage createAccountPage;
 
     @BeforeAll
     public static void Init(){
@@ -26,6 +28,7 @@ public class PlaywrightRunner {
         browserContext = browser
                 .newContext(new Browser.NewContextOptions().setPermissions(Arrays.asList("geolocation")));
         page = browserContext.newPage();
+        createAccountPage = new CreateAccountPage(page);
 
     }
 
